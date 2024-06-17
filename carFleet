@@ -1,0 +1,29 @@
+"""
+https://neetcode.io/problems/car-fleet
+"""
+from typing import List
+
+
+class Solution:
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        # Sort cars according to their positions on the road
+        pairs = [[p, s] for p, s in zip(position, speed)]
+        pairs.sort(reverse=True)
+
+        # Go over car by car from the closes to the destination and check if the following
+        # car can reach it before the first car reaches the destination
+        min_time = 0
+        groups = 0
+        for p, s in pairs:
+            time_to_destination = (target - p) / s
+
+            # The car will not join the fleet
+            if time_to_destination > min_time:
+                groups += 1
+                min_time = time_to_destination
+
+        return groups
+
+
+print(Solution().carFleet(10, [1,4], [3,2]))
+print(Solution().carFleet(10, [4, 1, 0, 7], [2,2,1,1]))
